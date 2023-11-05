@@ -1,7 +1,6 @@
 mod lexer;
-
-use crate::lexer::TokenType;
-use lexer::lexer;
+use crate::lexer::lexer::TokenType;
+use lexer::lexer::lexer;
 
 fn main() {
     let token_types = vec![

@@ -1,5 +1,5 @@
-use regex::Regex;
-
+pub mod lexer{
+    use regex::Regex;
 pub struct TokenType {
     pub type_name: &'static str,
     pub regex: Regex,
@@ -29,4 +29,5 @@ pub fn lexer(input: &str, token_types: &[TokenType]) -> Vec<(String, String)> {
     }
 
     tokens
+}
 }
