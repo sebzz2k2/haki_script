@@ -1,21 +1,32 @@
 mod lexer;
-use crate::lexer::lexer::TokenType;
+mod read_file;
+mod token_types;
+
 use lexer::lexer::lexer;
+use read_file::read_file::read_file;
+use std::{env, process};
+use token_types::TOKEN_TYPES;
 
 fn main() {
-    let token_types = vec![
-        TokenType::new("KEYWORD", r"^(let)"),
-        TokenType::new("NUMBER", r"^\d+"),
-        TokenType::new("IDENTIFIER", r"^[a-zA-Z_]\w*"),
-        TokenType::new("OPERATOR", r"^[+\-*/]"),
-        TokenType::new("PUNCTUATION", r"^[,;(){}]"),
-        TokenType::new("EQUAL", r"^="),
-    ];
+    let args: Vec<String> = env::args().collect();
 
-    let input = "let x = y ; get";
-    let tokens = lexer(input, &token_types);
+    if args.len() != 2 {
+        eprintln!("Usage: {} <file_name>", args[0]);
+        process::exit(1);
+    }
 
-    for token in tokens {
-        println!("{:?}", token);
+    let file_name = &args[1];
+
+    match read_file(file_name) {
+        Ok(input) => {
+            let tokens = lexer(&input, &TOKEN_TYPES);
+            for token in tokens {
+                println!("{:?}", token);
+            }
+        }
+        Err(e) => {
+            eprintln!("Error reading file: {}", e);
+            process::exit(1);
+        }
     }
 }
