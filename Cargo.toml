@@ -10,7 +10,3 @@ regex = "1.9.5"
 
 [dev-dependencies]
 regex = "1.9.5"
-
-[[test]]
-name = "lexer_test"
-path = "test/lexer_test.rs"

@@ -10,7 +10,6 @@ fn main() {
         TokenType::new("OPERATOR", r"^[+\-*/]"),
         TokenType::new("PUNCTUATION", r"^[,;(){}]"),
         TokenType::new("EQUAL", r"^="),
-        TokenType::new("KEYWORD", r"^(let|get)"),
     ];
 
     let input = "let x = y ; get";
