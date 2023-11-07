@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct TokenType {
     pub type_name: &'static str,
     pub regex_pattern: &'static str,
@@ -10,6 +11,12 @@ impl TokenType {
             regex_pattern,
         }
     }
+}
+
+#[derive(Debug)]
+pub struct Tokens {
+    pub token_type: String,
+    pub value: String,
 }
 
 pub const TOKEN_TYPES: [TokenType; 6] = [
