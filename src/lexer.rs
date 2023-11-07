@@ -1,11 +1,25 @@
 pub mod lexer {
     use crate::token_types::TokenType;
     use regex::Regex;
-    pub fn lexer(input: &str, token_types: &[TokenType]) -> Vec<(String, String)> {
+
+    pub fn tokenize(input: &str, token_types: &[TokenType]) -> Vec<(String, String)> {
         let mut tokens = Vec::new();
         let lines: Vec<&str> = input.lines().collect();
 
+        let re = Regex::new(r"(.*[^\s;])\;$").unwrap();
+
         for line in lines {
+            let line = if line.ends_with(";") {
+                line.to_string()
+            } else {
+                format!("{} ;", line)
+            };
+
+            let line = if re.is_match(&line) {
+                re.replace(&line, "$1 ;").to_string()
+            } else {
+                line.to_string()
+            };
             let words: Vec<&str> = line.split_whitespace().collect();
             for word in words {
                 for token_type in token_types {
@@ -26,7 +40,7 @@ pub mod lexer {
 
 #[cfg(test)]
 mod tests {
-    use super::lexer::lexer;
+    use super::lexer::tokenize;
     use crate::token_types::TokenType;
 
     #[test]
@@ -40,7 +54,7 @@ mod tests {
             TokenType::new("EQUAL", r"^="),
         ];
         let input = "let x = y ; get";
-        let tokens = lexer(input, &token_types);
+        let tokens = tokenize(input, &token_types);
 
         let expected_tokens = vec![
             ("KEYWORD", "let"),

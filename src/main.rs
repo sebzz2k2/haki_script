@@ -1,8 +1,10 @@
+mod ast;
 mod lexer;
 mod read_file;
 mod token_types;
 
-use lexer::lexer::lexer;
+use ast::ast_builder::build_ast;
+use lexer::lexer::tokenize;
 use read_file::read_file::read_file;
 use std::{env, process};
 use token_types::TOKEN_TYPES;
@@ -19,10 +21,10 @@ fn main() {
 
     match read_file(file_name) {
         Ok(input) => {
-            let tokens = lexer(&input, &TOKEN_TYPES);
-            for token in tokens {
-                println!("{:?}", token);
-            }
+            let tokens = tokenize(&input, &TOKEN_TYPES);
+            let ast = build_ast(tokens);
+
+            println!("{:#?}", ast);
         }
         Err(e) => {
             eprintln!("Error reading file: {}", e);
